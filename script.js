@@ -14,11 +14,15 @@ const bookTitle = document.querySelector('#book-title');
 const bookAuthor = document.querySelector('#book-author');
 const bookPages = document.querySelector('#book-pages');
 const isBookRead = document.querySelector('#book-isread');
+const toggleReadBtns = document.querySelectorAll('.isRead-btn');
+const deleteBookBtns = document.querySelectorAll('.delete-book-btn');
 
 let myLibrary = [];
+let bookIdCounter = 0;
 
 class Book {
   constructor(title, author, pages, isRead) {
+    this.id = bookIdCounter++; //Assign unique id
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -58,6 +62,7 @@ function displayBook(book) {
   // Display in the page
   const newCard = document.createElement('div');
   newCard.classList.add('book-card');
+  newCard.dataset.id = book.id;
 
   newCard.innerHTML = `
   <h3 class="book-card--title">${book.title}</h3>
@@ -72,10 +77,12 @@ function displayBook(book) {
   bookCard.appendChild(newCard);
 }
 
+//checking if same book title already exists
 function checkDuplicateBook(book) {
   return myLibrary.some((item) => item.title === book.title);
 }
 
+//popup func to show for 2sec
 function showPopup(message) {
   popupMessage.textContent = message;
 
@@ -94,6 +101,35 @@ closePopup.addEventListener('click', () => {
 closeBookFormBtn.addEventListener('click', () => {
   bookForm.classList.add('hidden');
 });
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('delete-book-btn')) {
+    const bookDiv = event.target.closest('.book-card');
+    const bookId = bookDiv.dataset.id;
+
+    //calling delete by id funcs
+    deleteBookById(bookId);
+  }
+});
+
+function deleteBookById(id) {
+  console.log(myLibrary);
+  //finding the index of the to be deleted id
+  const index = myLibrary.findIndex((book) => String(book.id) === String(id));
+
+  console.log(index);
+
+  //check if the book was found
+  if (index != -1) {
+    myLibrary.splice(index, 1);
+    showPopup(`Deleted successfully.`);
+  }
+
+  console.log(myLibrary);
+  //refresh the book displaying
+  bookCard.textContent = '';
+  myLibrary.forEach((book) => displayBook(book));
+}
 
 // Attach form submit event listener
 submitBookFormBtn.addEventListener('click', handleFormSubmit);
