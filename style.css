@@ -121,6 +121,9 @@ input[type='checkbox'] {
   margin: 1rem 0;
 }
 
+.book-form-title {
+  margin-bottom: 2rem;
+}
 .popup-div {
   position: fixed;
   z-index: 1000;
@@ -128,7 +131,7 @@ input[type='checkbox'] {
   top: 0.8rem;
   right: 0rem;
   height: 80px;
-  width: 400px;
+  max-width: 400px;
   background: linear-gradient(
     53deg,
     rgb(103, 113, 255),
@@ -156,4 +159,20 @@ input[type='checkbox'] {
   font-size: 3rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .main-container {
+    padding: 0.5rem;
+  }
+
+  #book-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .book-card {
+    width: 100%;
+  }
 }
