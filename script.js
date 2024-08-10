@@ -7,6 +7,7 @@ const popupMessage = document.querySelector('#popup-message');
 const bookForm = document.querySelector('.book-form');
 const closePopup = document.querySelector('#close-popup');
 const closeBookFormBtn = document.querySelector('#close-book-form');
+const emptyMessage = document.querySelector('.empty-list-message');
 
 // Form elements
 const submitBookFormBtn = document.querySelector('#submit-bookform');
@@ -59,6 +60,9 @@ function handleFormSubmit(event) {
 }
 
 function displayBook(book) {
+  //remove empty icon
+  emptyMessage.style.display = 'none';
+
   // Display in the page
   const newCard = document.createElement('div');
   newCard.classList.add('book-card');
@@ -102,6 +106,7 @@ closeBookFormBtn.addEventListener('click', () => {
   bookForm.classList.add('hidden');
 });
 
+//listening for delete and read-toggle btns
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('delete-book-btn')) {
     const bookDiv = event.target.closest('.book-card');
@@ -109,15 +114,32 @@ document.addEventListener('click', (event) => {
 
     //calling delete by id funcs
     deleteBookById(bookId);
+  } else if (event.target.classList.contains('isRead-btn')) {
+    const bookDiv = event.target.closest('.book-card');
+    const bookId = bookDiv.dataset.id;
+
+    console.log('click');
+    toggleReadBtn(bookId);
   }
 });
 
-function deleteBookById(id) {
+function toggleReadBtn(bookId) {
+  //toggling the read btn
+  const index = myLibrary.findIndex(
+    (book) => String(book.id) === String(bookId)
+  );
+
+  myLibrary[index].isRead = !myLibrary[index].isRead;
+
+  //refresh the book displaying
+  bookCard.textContent = '';
+  myLibrary.forEach((book) => displayBook(book));
   console.log(myLibrary);
+}
+
+function deleteBookById(id) {
   //finding the index of the to be deleted id
   const index = myLibrary.findIndex((book) => String(book.id) === String(id));
-
-  console.log(index);
 
   //check if the book was found
   if (index != -1) {
@@ -125,10 +147,13 @@ function deleteBookById(id) {
     showPopup(`Deleted successfully.`);
   }
 
-  console.log(myLibrary);
   //refresh the book displaying
+
   bookCard.textContent = '';
   myLibrary.forEach((book) => displayBook(book));
+
+  //show empty icon if myLibrary is empty
+  emptyMessage.style.display = 'block';
 }
 
 // Attach form submit event listener

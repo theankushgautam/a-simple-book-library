@@ -108,12 +108,17 @@ input[type='checkbox'] {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 2rem;
+  align-items: center;
 }
 
 .book-card {
   background-color: white;
   border-radius: 0.8rem;
   padding: 2rem;
+}
+
+img {
+  display: block;
 }
 
 #submit-bookform {
