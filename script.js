@@ -1,14 +1,14 @@
-//dom
+// DOM elements
 const inputField = document.querySelector('#book-name');
 const addBookBtn = document.querySelector('#addBook-btn');
-const bookTable = document.querySelector('#book-table');
+const bookCard = document.querySelector('#book-container');
 const popupDiv = document.querySelector('.popup-div');
 const popupMessage = document.querySelector('#popup-message');
 const bookForm = document.querySelector('.book-form');
 const closePopup = document.querySelector('#close-popup');
 const closeBookFormBtn = document.querySelector('#close-book-form');
 
-//form
+// Form elements
 const submitBookFormBtn = document.querySelector('#submit-bookform');
 const bookTitle = document.querySelector('#book-title');
 const bookAuthor = document.querySelector('#book-author');
@@ -19,7 +19,6 @@ let myLibrary = [];
 
 class Book {
   constructor(title, author, pages, isRead) {
-    //the constructor...
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -29,61 +28,52 @@ class Book {
 
 function addBookToLibrary() {
   addBookBtn.addEventListener('click', () => {
-    //show bookform by removing hidden-css class
+    // Show book form by removing hidden-css class
     bookForm.classList.toggle('hidden');
-
-    //listening for submit button
-    submitBookFormBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      //getting values from the inputs
-      const myBook = new Book(
-        bookTitle.value,
-        bookAuthor.value,
-        bookPages.value,
-        isBookRead.value
-      );
-
-      if (checkDuplicateBook(myBook)) {
-        //checking for duplicate book entry
-        showPopup('Book title already exists!');
-
-        console.log('Book already exists.');
-      } else {
-        myLibrary.push(myBook);
-
-        //displaying the newly added book in the page
-        displayBook(myBook);
-
-        showPopup('New book successfully added.');
-
-        console.log(checkDuplicateBook(myBook));
-        console.log(myLibrary);
-      }
-    });
   });
 }
 
+function handleFormSubmit(event) {
+  event.preventDefault();
+
+  // Get values from the inputs
+  const myBook = new Book(
+    bookTitle.value,
+    bookAuthor.value,
+    bookPages.value,
+    isBookRead.checked // Use .checked for checkbox
+  );
+
+  if (checkDuplicateBook(myBook)) {
+    showPopup('This book title already exists!');
+  } else {
+    myLibrary.push(myBook);
+    displayBook(myBook);
+    showPopup('New book successfully added.');
+    bookForm.classList.add('hidden'); // Hide form after submission
+  }
+}
+
 function displayBook(book) {
-  //display in the page
-  const row = document.createElement('tr');
+  // Display in the page
+  const newCard = document.createElement('div');
+  newCard.classList.add('book-card');
 
-  row.innerHTML = `<td>${myLibrary.length}</td>
-                   <td>${book.title}</td>
-                   <td>${book.author}</td>
-                   <td>${book.pages}</td>`;
+  newCard.innerHTML = `
+  <h3 class="book-card--title">${book.title}</h3>
+  <p class="book-card--author">By ${book.author}</p>
+  <p class="book-card--pages">${book.pages} Pages</p>
+  <button class="isRead-btn">${
+    book.isRead ? 'Already Read' : 'Not Read'
+  }</button>
+  <button class="delete-book-btn">Delete</button>
+  `;
 
-  bookTable.appendChild(row);
+  bookCard.appendChild(newCard);
 }
 
 function checkDuplicateBook(book) {
-  let hasBook = false;
-
-  if (myLibrary.length > 0) {
-    hasBook = myLibrary.some((item) => item.title === book.title);
-  }
-
-  return hasBook;
+  return myLibrary.some((item) => item.title === book.title);
 }
 
 function showPopup(message) {
@@ -95,15 +85,18 @@ function showPopup(message) {
   }, 2000);
 }
 
-//popup close btn
+// Popup close button
 closePopup.addEventListener('click', () => {
   popupDiv.classList.remove('show-popup');
 });
 
-//close button for book form
+// Close button for book form
 closeBookFormBtn.addEventListener('click', () => {
   bookForm.classList.add('hidden');
 });
 
-//main-entry point
+// Attach form submit event listener
+submitBookFormBtn.addEventListener('click', handleFormSubmit);
+
+// Main entry point
 addBookToLibrary();

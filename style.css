@@ -15,10 +15,6 @@ body {
   padding: 4rem;
 }
 
-#book-container {
-  margin: 3rem 0;
-}
-
 .book-form {
   background-color: white;
   padding: 1rem;
@@ -30,6 +26,21 @@ body {
   display: none;
 }
 
+.isRead-btn,
+.delete-book-btn {
+  margin-top: 1rem;
+  margin-right: 0.4rem;
+  font-weight: 400;
+}
+
+.isRead-btn {
+  background-color: rgb(16, 136, 80);
+}
+
+.delete-book-btn {
+  background-color: rgb(190, 78, 78);
+}
+
 #close-book-form {
   float: right;
 }
@@ -37,6 +48,20 @@ body {
 li {
   margin-left: 1rem;
   padding: 0;
+}
+
+h2 {
+  margin: 1rem 0.1rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.1rem;
+  color: rgb(49, 49, 49);
+}
+
+h3 {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgb(49, 49, 49);
 }
 
 button {
@@ -48,6 +73,14 @@ button {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button:active {
+  scale: 0.95;
 }
 
 input[type='text'],
@@ -64,20 +97,21 @@ input[type='checkbox'] {
   margin-right: 0.4rem;
 }
 
-table {
-  border: 1px solid black;
-  border-collapse: collapse;
-  text-align: left;
+.book-section {
+  margin: 5rem 0;
+  border-top: 10px solid rgb(252, 179, 43);
+  border-radius: 0.6rem;
 }
 
-th,
-td {
-  padding: 0.5rem 1rem;
-  border: 1px solid black;
+#book-container {
+  display: inline-flex;
+  gap: 2rem;
 }
 
-tr:nth-child(even) {
-  background-color: rgb(241, 241, 241);
+.book-card {
+  background-color: white;
+  border-radius: 0.8rem;
+  padding: 2rem;
 }
 
 #submit-bookform {
@@ -94,15 +128,15 @@ tr:nth-child(even) {
   width: 400px;
   background: linear-gradient(
     53deg,
-    rgb(255, 103, 103),
-    rgb(236, 114, 114),
-    rgba(255, 84, 84, 0.842)
+    rgb(103, 113, 255),
+    rgb(136, 114, 236),
+    rgba(4, 94, 196, 0.842)
   );
   border-radius: 0.8rem;
   font-size: 1.1rem;
   font-weight: 600;
   padding: 0.8rem;
-  color: rgb(247, 217, 216);
+  color: white;
   transition: right 0.18s linear;
 
   display: flex;
